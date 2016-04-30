@@ -1,26 +1,23 @@
 package org.functionalkoans.forscala
 
-import org.functionalkoans.forscala.support.KoanSuite
-import org.scalatest.Matchers
+import org.scalatest.matchers.ShouldMatchers
+import language.implicitConversions
+import support.KoanSuite
 
-import scala.language.implicitConversions
+class AboutImplicits extends KoanSuite with ShouldMatchers {
 
-class AboutImplicits extends KoanSuite with Matchers {
-
-  koan(
-    """Implicits wrap around existing classes to provide extra functionality
-      | This is similar to \'monkey patching\' in Ruby, and Meta-Programming in Groovy.
-      | Creating a method isOdd for Int, which doesn't exist""".stripMargin) {
+  koan("""Implicits wrap around existing classes to provide extra functionality
+           |   This is similar to \'monkey patching\' in Ruby, and Meta-Programming in Groovy.
+           |   Creating a method isOdd for Int, which doesn't exist""") {
 
     class KoanIntWrapper(val original: Int) {
       def isOdd = original % 2 != 0
     }
 
-    /** implicit methods don't ''need'' an explicit return type, but it's better to add it */
-    implicit def thisMethodNameIsIrrelevant(value: Int): KoanIntWrapper = new KoanIntWrapper(value)
+    implicit def thisMethodNameIsIrrelevant(value: Int) = new KoanIntWrapper(value)
 
-    19.isOdd should be(__)
-    20.isOdd should be(__)
+    19.isOdd should be(true)
+    20.isOdd should be(false)
   }
 
   koan("""Implicits rules can be imported into your scope with an import""") {
@@ -28,16 +25,17 @@ class AboutImplicits extends KoanSuite with Matchers {
 
       class KoanIntWrapper(val original: Int) {
         def isOdd = original % 2 != 0
+
         def isEven = !isOdd
       }
 
-      implicit def thisMethodNameIsIrrelevant(value: Int): KoanIntWrapper = new KoanIntWrapper(value)
+      implicit def thisMethodNameIsIrrelevant(value: Int) = new KoanIntWrapper(value)
     }
 
     import MyPredef._
     //imported implicits come into effect within this scope
-    19.isOdd should be(__)
-    20.isOdd should be(__)
+    19.isOdd should be(true)
+    20.isOdd should be(false)
   }
 
   koan("""Implicits can be used to automatically convert one type to another""") {
@@ -47,22 +45,21 @@ class AboutImplicits extends KoanSuite with Matchers {
 
     def add(a: BigInteger, b: BigInteger) = a.add(b)
 
-    add(3, 6) should be(__)
+    add(3, 6) should be(new BigInteger("9"))
   }
 
-  koan(
-    """Implicits can be used declare a value to be provided as a default as
-      | long as an implicit value is set with in the scope.  These are
-      | called implicit function parameters""".stripMargin) {
+  koan("""Implicits can be used declare a value to be provided as a default as
+          |   long as an implicit value is set with in the scope.  These are
+          |   called implicit function parameters""") {
 
     def howMuchCanIMake_?(hours: Int)(implicit dollarsPerHour: BigDecimal) = dollarsPerHour * hours
 
     implicit var hourlyRate = BigDecimal(34.00)
 
-    howMuchCanIMake_?(30) should be(__)
+    howMuchCanIMake_?(30) should be(1020)
 
     hourlyRate = BigDecimal(95.00)
-    howMuchCanIMake_?(95) should be(__)
+    howMuchCanIMake_?(95) should be(9025)
   }
 
   koan("""Implicit Function Parameters can contain a list of implicits""") {
@@ -73,10 +70,10 @@ class AboutImplicits extends KoanSuite with Matchers {
     implicit var hourlyRate = BigDecimal(34.00)
     implicit val currencyName = "Dollars"
 
-    howMuchCanIMake_?(30) should be(__)
+    howMuchCanIMake_?(30) should be("1020.0 Dollars")
 
     hourlyRate = BigDecimal(95.00)
-    howMuchCanIMake_?(95) should be(__)
+    howMuchCanIMake_?(95) should be("9025.0 Dollars")
   }
 
   koan("""Default arguments though are preferred to Implicit Function Parameters""") {
@@ -84,8 +81,8 @@ class AboutImplicits extends KoanSuite with Matchers {
     def howMuchCanIMake_?(hours: Int, amount: BigDecimal = 34, currencyName: String = "Dollars") =
       (amount * hours).toString() + " " + currencyName
 
-    howMuchCanIMake_?(30) should be(__)
+    howMuchCanIMake_?(30) should be("1020 Dollars")
 
-    howMuchCanIMake_?(95, 95) should be(__)
+    howMuchCanIMake_?(95, 95) should be("9025 Dollars")
   }
 }

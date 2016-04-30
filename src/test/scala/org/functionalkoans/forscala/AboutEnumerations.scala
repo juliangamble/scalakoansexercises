@@ -1,13 +1,13 @@
 package org.functionalkoans.forscala
 
-import org.functionalkoans.forscala.support.KoanSuite
-import org.scalatest.Matchers
+import support.KoanSuite
+import org.scalatest.matchers.ShouldMatchers
 
 
-class AboutEnumerations extends KoanSuite with Matchers {
+class AboutEnumerations extends KoanSuite with ShouldMatchers {
 
-  // To create an enumeration, create an object that extends the abstract class Enumeration,
-  // and set a val variable to the method Value.  This is a trick to give values to each val."
+// To create an enumeration, create an object that extends the abstract class Enumeration,
+// and set a val variable to the method Value.  This is a trick to give values to each val."
   koan("Value assigns a numerical value to fields") {
 
     object Planets extends Enumeration {
@@ -22,18 +22,18 @@ class AboutEnumerations extends KoanSuite with Matchers {
       val Pluto = Value
     }
 
-    Planets.Mercury.id should be(__)
-    Planets.Venus.id should be(__)
+    Planets.Mercury.id should be(0)
+    Planets.Venus.id should be(1)
 
-    Planets.Mercury.toString should be(__) //How does it get the name? by Reflection.
-    Planets.Venus.toString should be(__)
+    Planets.Mercury.toString should be("Mercury") //How does it get the name? by Reflection.
+    Planets.Venus.toString should be("Venus")
 
-    (Planets.Earth == Planets.Earth) should be(__)
-    (Planets.Neptune == Planets.Jupiter) should be(__)
+    (Planets.Earth == Planets.Earth) should be(true)
+    (Planets.Neptune == Planets.Jupiter) should be(false)
   }
 
-  // You can create an enumeration with your own index and your own Strings, in this koan,
-  // we will start with an index of one and use Greek names instead of Roman
+// You can create an enumeration with your own index and your own Strings, in this koan,
+// we will start with an index of one and use Greek names instead of Roman
   koan("Enumerations can set their own index and name") {
     object GreekPlanets extends Enumeration {
 
@@ -49,30 +49,30 @@ class AboutEnumerations extends KoanSuite with Matchers {
       val Pluto = Value(9, "Hades")
     }
 
-    GreekPlanets.Mercury.id should be(__)
-    GreekPlanets.Venus.id should be(__)
+    GreekPlanets.Mercury.id should be(1)
+    GreekPlanets.Venus.id should be(2)
 
-    GreekPlanets.Mercury.toString should be("__")
-    GreekPlanets.Venus.toString should be("__")
+    GreekPlanets.Mercury.toString should be("Hermes")
+    GreekPlanets.Venus.toString should be("Aphrodite")
 
-    (GreekPlanets.Earth == GreekPlanets.Earth) should be(__)
-    (GreekPlanets.Neptune == GreekPlanets.Jupiter) should be(__)
+    (GreekPlanets.Earth == GreekPlanets.Earth) should be(true)
+    (GreekPlanets.Neptune == GreekPlanets.Jupiter) should be(false)
   }
 
-  // Enumerations can be declared in one line if you are merely setting variables to Value
+// Enumerations can be declared in one line if you are merely setting variables to Value
   koan("Enumeration declarations can be done on one line") {
     object Planets extends Enumeration {
       val Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto = Value
     }
 
-    Planets.Mercury.id should be(__)
-    Planets.Venus.id should be(__)
+    Planets.Mercury.id should be(0)
+    Planets.Venus.id should be(1)
 
-    Planets.Mercury.toString should be("__")
-    Planets.Venus.toString should be("__")
+    Planets.Mercury.toString should be("Mercury")
+    Planets.Venus.toString should be("Venus")
 
-    (Planets.Earth == Planets.Earth) should be(__)
-    (Planets.Neptune == Planets.Jupiter) should be(__)
+    (Planets.Earth == Planets.Earth) should be(true)
+    (Planets.Neptune == Planets.Jupiter) should be(false)
   }
 
 
@@ -90,14 +90,14 @@ class AboutEnumerations extends KoanSuite with Matchers {
       val Pluto = Value("Hades")
     }
 
-    GreekPlanets.Mercury.id should be(__)
-    GreekPlanets.Venus.id should be(__)
+    GreekPlanets.Mercury.id should be(0)
+    GreekPlanets.Venus.id should be(1)
 
-    GreekPlanets.Mercury.toString should be(__)
-    GreekPlanets.Venus.toString should be(__)
+    GreekPlanets.Mercury.toString should be("Hermes")
+    GreekPlanets.Venus.toString should be("Aphrodite")
 
-    (GreekPlanets.Earth == GreekPlanets.Earth) should be(__)
-    (GreekPlanets.Neptune == GreekPlanets.Jupiter) should be(__)
+    (GreekPlanets.Earth == GreekPlanets.Earth) should be(true)
+    (GreekPlanets.Neptune == GreekPlanets.Jupiter) should be(false)
   }
 
   koan("You can extend the Enumeration by extending the Val class.") {
@@ -107,7 +107,7 @@ class AboutEnumerations extends KoanSuite with Matchers {
       val G = 6.67300E-11
 
       class PlanetValue(val i: Int, val name: String, val mass: Double, val radius: Double)
-        extends Val(i: Int, name: String) {
+              extends Val(i: Int, name: String) {
 
         def surfaceGravity = G * mass / (radius * radius)
 
@@ -128,7 +128,7 @@ class AboutEnumerations extends KoanSuite with Matchers {
 
     }
 
-    Planets.Earth.mass should be(__)
-    Planets.Earth.radius should be(__)
+    Planets.Earth.mass should be(5.976e+24)
+    Planets.Earth.radius should be(6.37814e6)
   }
 }
